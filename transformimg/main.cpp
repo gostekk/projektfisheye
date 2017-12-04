@@ -1,11 +1,12 @@
-#include <QCoreApplication>
+
 #include <QImageReader>
 #include <QImage>
 #include <QDebug>
 #include <QtMath>
+#include <QColor>
 void SaveImage(QImage naszobraz) {
-    qDebug() << naszobraz.save("/Users/adrix/transformimg/swinak6.jpg");
-
+    qDebug() << naszobraz.save("swinak6.jpg");
+	//return 0;
 }
 
 
@@ -49,17 +50,19 @@ QImage ConvertFromFishEye(QImage naszobraz) {
           //naszobraz.setPixel(width,height,ColorX.rgba());
             //QColor
             //naszobraz.SetPixel()
+            
         }
     }
 
 
-   SaveImage(naszobraz);
+  SaveImage(naszobraz);
+  return naszobraz; /*albo decydujemy się na return albo zmieniamy typ na void*/
 
 }
 
 void LoadImage() {
     QImage naszobraz;
-    naszobraz.load("/Users/adrix/transformimg/Panotools5618.jpg");
+    naszobraz.load("Panotools5618.jpg");
     qDebug() <<"QImage" << naszobraz.size();
     naszobraz.alphaChannel();
     ConvertFromFishEye(naszobraz);
@@ -69,4 +72,6 @@ void LoadImage() {
 int main(int argc)
 {
     LoadImage();
+    
+    return 0;
 }
