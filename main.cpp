@@ -5,7 +5,7 @@
 #include <QtMath>
 #include <QColor>
 void SaveImage(QImage naszobraz) {
-    qDebug() << naszobraz.save("swinak6.jpg");
+    qDebug() << naszobraz.save("convertedImage.jpg");
 	//return 0;
 }
 
@@ -63,8 +63,8 @@ QImage ConvertFromFishEye(QImage naszobraz, QImage naszobraz1) {
 void LoadImage() {
     QImage naszobraz;
     QImage naszobraz1;
-    naszobraz.load("Panotools5618.jpg");
-    naszobraz1.load("Panotools5618.jpg");
+    naszobraz.load("image.jpg");
+    naszobraz1.load("image.jpg");
     qDebug() <<"QImage" << naszobraz.size();
     naszobraz.alphaChannel();
     naszobraz1.alphaChannel();
