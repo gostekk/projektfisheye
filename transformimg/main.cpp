@@ -10,7 +10,7 @@ void SaveImage(QImage naszobraz) {
 }
 
 
-QImage ConvertFromFishEye(QImage naszobraz) {
+QImage ConvertFromFishEye(QImage naszobraz, QImage naszobraz1) {
 
     qDebug() << "Convert";
     QVariant vTheta = 0;
@@ -45,7 +45,7 @@ QImage ConvertFromFishEye(QImage naszobraz) {
 
             QColor NewColorOfPixel = naszobraz.pixel(vSourceWidthPixel.toInt(), vSourceHeightPixel.toInt());
 
-            naszobraz.setPixel(width, height, NewColorOfPixel.rgba());
+            naszobraz1.setPixel(width, height, NewColorOfPixel.rgba());
 
           //naszobraz.setPixel(width,height,ColorX.rgba());
             //QColor
@@ -55,17 +55,20 @@ QImage ConvertFromFishEye(QImage naszobraz) {
     }
 
 
-  SaveImage(naszobraz);
-  return naszobraz; /*albo decydujemy się na return albo zmieniamy typ na void*/
+  SaveImage(naszobraz1);
+  return naszobraz1; /*albo decydujemy się na return albo zmieniamy typ na void*/
 
 }
 
 void LoadImage() {
     QImage naszobraz;
+    QImage naszobraz1;
     naszobraz.load("Panotools5618.jpg");
+    naszobraz1.load("Panotools5618.jpg");
     qDebug() <<"QImage" << naszobraz.size();
     naszobraz.alphaChannel();
-    ConvertFromFishEye(naszobraz);
+    naszobraz1.alphaChannel();
+    ConvertFromFishEye(naszobraz, naszobraz1);
 
 }
 
