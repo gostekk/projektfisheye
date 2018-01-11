@@ -5,11 +5,13 @@
 #include <QtMath>
 #include <QColor>
 
+#include "gui_fisheye/main.cpp"
+
 void SaveImage(QImage naszobraz) {
   qDebug() << naszobraz.save("convertedImage.jpg");
 }
 
-QImage ConvertFromFishEye(QImage naszobraz) {
+QImage ConvertFromFishEye(QImage naszobraz, QString ConversionType) {
 
   int W,H,WO,HO,xd,yd;
   // float foc=4.0/7.3,
@@ -29,29 +31,33 @@ QImage ConvertFromFishEye(QImage naszobraz) {
 
   for(int ix = 0; ix < WO; ix++) {
     for (int iy=0; iy < HO; iy++) {
-
+		
       xf = (float)(ix-WO/2);
       yf = (float)(iy-HO/2);
       r = qSqrt( xf*xf+yf*yf ) * vStrenght;
       cosfi = xf / r;
       sinfi = yf / r;
 
-      // Stereographic // vStrenght = 0.78
-      xf = cosfi * 2 * D * qTan(0.5 * qAtan2(r,DO));
-      yf = sinfi * 2 * D * qTan(0.5 * qAtan2(r,DO));
-
-      // Equidistant // vStrenght =
-      // xf = cosfi * D * qAtan2(r,DO);
-      // yf = sinfi * D * qAtan2(r,DO);
-
-      // Equisolid angle // vStrenght =
-      // xf = cosfi * 2 * D * qSin(0.5 * qAtan2(r,DO));
-      // yf = sinfi * 2 * D * qSin(0.5 * qAtan2(r,DO));
-
-      // Orthographic // vStrenght = 1.2
-      // xf = cosfi * D * qSin(qAtan2(r,DO));
-      // yf = sinfi * D * qSin(qAtan2(r,DO));
-
+	if (ConversionType == "Stereographic") {
+		// Stereographic // vStrenght = 0.78
+		xf = cosfi * 2 * D * qTan(0.5 * qAtan2(r,DO));
+		yf = sinfi * 2 * D * qTan(0.5 * qAtan2(r,DO));
+	}
+	if (ConversionType == "Equidistant") {
+		// Equidistant // vStrenght =
+		xf = cosfi * D * qAtan2(r,DO);
+		yf = sinfi * D * qAtan2(r,DO);
+	}
+	if (ConversionType == "Equisolid") {
+		// Equisolid angle // vStrenght =
+		xf = cosfi * 2 * D * qSin(0.5 * qAtan2(r,DO));
+		yf = sinfi * 2 * D * qSin(0.5 * qAtan2(r,DO));
+	}
+	if (ConversionType == "Orthographic") {
+		// Orthographic // vStrenght = 1.2
+		xf = cosfi * D * qSin(qAtan2(r,DO));
+		yf = sinfi * D * qSin(qAtan2(r,DO));
+	}
       xd = (int)xf;
       yd = (int)yf;
       xd += W / 2;
@@ -73,12 +79,13 @@ void LoadImage() {
   naszobraz.load("images/image.jpg");
   qDebug() <<"QImage" << naszobraz.size();
   naszobraz.alphaChannel();
-  ConvertFromFishEye(naszobraz);
+  //ConvertFromFishEye(naszobraz); usunac jak gui bedzie dzialac
 
 }
 
 int main(int argc){
-  LoadImage();
+	qDebug() << "yay";
+  //LoadImage(); usunac jak gui bedzie dzialac
 
   return 0;
 }
