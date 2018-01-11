@@ -77,6 +77,9 @@ void Widget::OpenClicked() {
 }
 
 void Widget::SaveClicked() {
-	ConvertFromFishEye(ImageToConvert, ConversionType);
+	double vStrenght = ui->correction_box->value();
+	double vRadius = ui->radius_box->value();
+	qDebug() << vStrenght;
+	ConvertFromFishEye(ImageToConvert, ConversionType, vStrenght, vRadius);
 }
 

@@ -9,13 +9,17 @@ void SaveImage(QImage naszobraz) {
   qDebug() <<"Saved: " << naszobraz.save("convertedImage.jpg");
 }
 
-void ConvertFromFishEye(QImage naszobraz, QString ConversionType) {
+void ConvertFromFishEye(
+	QImage naszobraz, 
+	QString ConversionType,
+	double vStrenght,
+	double vRadius) {
 
   int W,H,WO,HO,xd,yd;
   // float foc=4.0/7.3,
   float foc=4.0/12.0;
   float r,xf,yf,cosfi,sinfi,D,DO;
-  float vStrenght=0.78;
+  //float vStrenght=0.78;
 
   W = naszobraz.width();
   H = naszobraz.height();
