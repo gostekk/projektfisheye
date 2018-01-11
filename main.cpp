@@ -5,13 +5,11 @@
 #include <QtMath>
 #include <QColor>
 
-#include "gui_fisheye/main.cpp"
-
 void SaveImage(QImage naszobraz) {
-  qDebug() << naszobraz.save("convertedImage.jpg");
+  qDebug() <<"Saved: " << naszobraz.save("convertedImage.jpg");
 }
 
-QImage ConvertFromFishEye(QImage naszobraz, QString ConversionType) {
+void ConvertFromFishEye(QImage naszobraz, QString ConversionType) {
 
   int W,H,WO,HO,xd,yd;
   // float foc=4.0/7.3,
@@ -37,7 +35,7 @@ QImage ConvertFromFishEye(QImage naszobraz, QString ConversionType) {
       r = qSqrt( xf*xf+yf*yf ) * vStrenght;
       cosfi = xf / r;
       sinfi = yf / r;
-
+ 
 	if (ConversionType == "Stereographic") {
 		// Stereographic // vStrenght = 0.78
 		xf = cosfi * 2 * D * qTan(0.5 * qAtan2(r,DO));
@@ -71,21 +69,13 @@ QImage ConvertFromFishEye(QImage naszobraz, QString ConversionType) {
   }
 
   SaveImage(convertedImage);
-  return convertedImage; /*albo decydujemy się na return albo zmieniamy typ na void*/
 }
 
-void LoadImage() {
+QImage LoadImage() {
   QImage naszobraz;
-  naszobraz.load("images/image.jpg");
+  naszobraz.load("../images/image.jpg");
   qDebug() <<"QImage" << naszobraz.size();
   naszobraz.alphaChannel();
-  //ConvertFromFishEye(naszobraz); usunac jak gui bedzie dzialac
+  return naszobraz;
 
-}
-
-int main(int argc){
-	qDebug() << "yay";
-  //LoadImage(); usunac jak gui bedzie dzialac
-
-  return 0;
 }

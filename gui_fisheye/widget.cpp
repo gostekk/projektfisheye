@@ -1,5 +1,7 @@
 #include "widget.h"
 #include "ui_widget.h"
+#include "../main.cpp"
+
 #include <QDebug>
 
 Widget::Widget(QWidget *parent) :
@@ -7,11 +9,7 @@ Widget::Widget(QWidget *parent) :
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
-       connect(
-		stereographic_button, 
-		SIGNAL (clicked()),
-		this,
-		SLOT (StereographicButton()));
+    ConnectButtons();
 }
 
 Widget::~Widget()
@@ -19,7 +17,66 @@ Widget::~Widget()
     delete ui;
 }
 
-void Widget::StereographicClicked(){
-	qDebug() << "Chrum";
+void Widget::ConnectButtons() {
+	
+	connect(
+		ui->stereographic_button, 
+		SIGNAL (clicked()),
+		this,
+		SLOT (StereographicClicked()));
+
+	connect(
+		ui->equidistant_button, 
+		SIGNAL (clicked()),
+		this,
+		SLOT (EquidistantClicked()));
+
+	connect(
+		ui->equisolid_button, 
+		SIGNAL (clicked()),
+		this,
+		SLOT (EquisolidClicked()));
+
+	connect(
+		ui->orthographic_button, 
+		SIGNAL (clicked()),
+		this,
+		SLOT (OrthographicClicked()));
+
+	connect(
+		ui->open_button, 
+		SIGNAL (clicked()),
+		this,
+		SLOT (OpenClicked()));
+
+	connect(
+		ui->save_button, 
+		SIGNAL (clicked()),
+		this,
+		SLOT (SaveClicked()));
+}
+
+void Widget::StereographicClicked() {
+	ConversionType = "Stereographic";	
+}
+
+void Widget::EquidistantClicked() {
+	ConversionType = "Equidistant";
+}
+
+void Widget::EquisolidClicked() {
+	ConversionType = "Equisolid";
+}
+
+void Widget::OrthographicClicked() {
+	ConversionType = "Orthographic";
+}
+
+void Widget::OpenClicked() {
+	ImageToConvert = LoadImage();
+}
+
+void Widget::SaveClicked() {
+	ConvertFromFishEye(ImageToConvert, ConversionType);
 }
 

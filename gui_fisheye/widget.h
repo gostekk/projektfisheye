@@ -2,7 +2,7 @@
 #define WIDGET_H
 
 #include <QWidget>
-#include <QPushButton>
+#include <QImage>
 
 namespace Ui {
 class Widget;
@@ -15,13 +15,21 @@ class Widget : public QWidget
 public:
     explicit Widget(QWidget *parent = 0);
     ~Widget();
+    
+    QString ConversionType;
   
 private slots:
 	void StereographicClicked();
+	void EquidistantClicked();
+	void EquisolidClicked();
+	void OrthographicClicked();
+	void OpenClicked();
+	void SaveClicked();
 
 private:
     Ui::Widget *ui;
-    QPushButton *stereographic_button;
+    QImage ImageToConvert;
+    void ConnectButtons();
 };
 
 #endif // WIDGET_H
