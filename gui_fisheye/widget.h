@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QImage>
+#include <QPalette>
 
 namespace Ui {
 class Widget;

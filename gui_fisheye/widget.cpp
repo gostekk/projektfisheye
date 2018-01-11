@@ -3,12 +3,15 @@
 #include "../main.cpp"
 
 #include <QDebug>
+#include <QWidget>
+#include <QPalette>
 
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
+
     ConnectButtons();
 }
 
