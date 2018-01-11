@@ -6,76 +6,79 @@
 #include <QColor>
 
 void SaveImage(QImage naszobraz) {
-    qDebug() << naszobraz.save("convertedImage.jpg");
-	//return 0;
+  qDebug() << naszobraz.save("convertedImage.jpg");
 }
 
-
 QImage ConvertFromFishEye(QImage naszobraz) {
-    QImage convertedImage;
-    convertedImage = naszobraz;
-    
 
-    qDebug() << "Convert";
-    QVariant vTheta = 0;
-   // QColor color(0,0,0);
+  int W,H,WO,HO,xd,yd;
+  // float foc=4.0/7.3,
+  float foc=4.0/12.0;
+  float r,xf,yf,cosfi,sinfi,D,DO;
+  float vStrenght=0.78;
 
-    int vHalfImageWidth = naszobraz.width()/2;
-    int vHalfImageHeight = naszobraz.height()/2;
-    qDebug() << "Width: " << vHalfImageWidth << "\nHeight: " << vHalfImageHeight;
-    double vStrenght = 1; //Its only aproximate, dont know what value is correct
-    QVariant vCorrectionRadius = qSqrt(qPow(vHalfImageWidth, 2) + qPow(vHalfImageHeight, 2)) / vStrenght;
-    qDebug() << "CorrectionRadius" << vCorrectionRadius;
+  W = naszobraz.width();
+  H = naszobraz.height();
+  WO = naszobraz.width()/2;
+  HO = naszobraz.height()/2;
 
-    for(int width = 0; width < naszobraz.width(); width++) {
-        for (int height=0; height < naszobraz.height(); height++) {
-            QVariant vNewWidthPosition = width - vHalfImageWidth;
-            QVariant vNewHeightPosition = height - vHalfImageHeight;
-            QVariant vDistance = qSqrt(qPow(vNewWidthPosition.toFloat(), 2) + qPow(vNewHeightPosition.toFloat(), 2));
-            QVariant vRadius = vDistance.toFloat() / vCorrectionRadius.toFloat();
-            //qDebug() << "Radius" << vRadius;
+  QImage convertedImage(WO,HO, QImage::Format_RGB32);
 
-            if (vRadius == 0) {
-                vTheta = 1;
-               // qDebug() << "jestem 0";
-            } else {
-                vTheta = qAtan(vRadius.toFloat()) / vRadius.toFloat();
-                //vTheta = qAtan2(vNewWidthPosition,vNewHeightPosition);
-                //vTheta = qTan(vRadius.toFloat()) / vRadius.toFloat();
+  DO=foc*qSqrt(WO*WO+HO*HO);
+  D=foc*qSqrt(W*W+H*H);
 
-            }
-            QVariant vSourceWidthPixel = vHalfImageWidth + vTheta.toFloat() * vNewWidthPosition.toFloat() * 1; // 1 is zoom, for now dont use it
-            QVariant vSourceHeightPixel = vHalfImageHeight + vTheta.toFloat() * vNewHeightPosition.toFloat() * 1; // 1 is zoom, for now dont use it
+  for(int ix = 0; ix < WO; ix++) {
+    for (int iy=0; iy < HO; iy++) {
 
-            QColor NewColorOfPixel = naszobraz.pixel(vSourceWidthPixel.toInt(), vSourceHeightPixel.toInt());
+      xf = (float)(ix-WO/2);
+      yf = (float)(iy-HO/2);
+      r = qSqrt( xf*xf+yf*yf ) * vStrenght;
+      cosfi = xf / r;
+      sinfi = yf / r;
 
-            convertedImage.setPixel(width, height, NewColorOfPixel.rgba());
+      // Stereographic // vStrenght = 0.78
+      xf = cosfi * 2 * D * qTan(0.5 * qAtan2(r,DO));
+      yf = sinfi * 2 * D * qTan(0.5 * qAtan2(r,DO));
 
-          //naszobraz.setPixel(width,height,ColorX.rgba());
-            //QColor
-            //naszobraz.SetPixel()
-            
-        }
+      // Equidistant // vStrenght =
+      // xf = cosfi * D * qAtan2(r,DO);
+      // yf = sinfi * D * qAtan2(r,DO);
+
+      // Equisolid angle // vStrenght =
+      // xf = cosfi * 2 * D * qSin(0.5 * qAtan2(r,DO));
+      // yf = sinfi * 2 * D * qSin(0.5 * qAtan2(r,DO));
+
+      // Orthographic // vStrenght = 1.2
+      // xf = cosfi * D * qSin(qAtan2(r,DO));
+      // yf = sinfi * D * qSin(qAtan2(r,DO));
+
+      xd = (int)xf;
+      yd = (int)yf;
+      xd += W / 2;
+      yd += H / 2;
+
+      if ((xd>0)&&(xd<W)&&(yd>0)&&(yd<H)) {
+        QColor NewColorOfPixel = naszobraz.pixel(xd, yd);
+        convertedImage.setPixel(ix, iy, NewColorOfPixel.rgba());
+      }
     }
-
+  }
 
   SaveImage(convertedImage);
   return convertedImage; /*albo decydujemy się na return albo zmieniamy typ na void*/
-
 }
 
 void LoadImage() {
-    QImage naszobraz;
-    naszobraz.load("images/image2.jpg");
-    qDebug() <<"QImage" << naszobraz.size();
-    naszobraz.alphaChannel();
-    ConvertFromFishEye(naszobraz);
+  QImage naszobraz;
+  naszobraz.load("images/image.jpg");
+  qDebug() <<"QImage" << naszobraz.size();
+  naszobraz.alphaChannel();
+  ConvertFromFishEye(naszobraz);
 
 }
 
-int main(int argc)
-{
-    LoadImage();
-    
-    return 0;
+int main(int argc){
+  LoadImage();
+
+  return 0;
 }
