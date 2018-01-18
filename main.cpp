@@ -1,21 +1,21 @@
-
 #include <QImageReader>
 #include <QImage>
 #include <QDebug>
 #include <QtMath>
 #include <QColor>
 
-//#include "gui_fisheye/widget.cpp"
-
-void SaveImage(QImage naszobraz) {
-  qDebug() <<"Saved: " << naszobraz.save("convertedImage.jpg");
+void SaveImage(QImage naszobraz, QString DirectionToSaveImage) {
+  qDebug() <<"Saved: " << naszobraz.save(QString("%1.%2").
+	arg(DirectionToSaveImage).
+	arg("jpg"));
 }
 
 void ConvertFromFishEye(
 	QImage naszobraz, 
 	QString ConversionType,
 	double vStrenght,
-	double vRadius) {
+	double vRadius,
+	QString DirectionToSaveImage) {
 
   int W,H,WO,HO,xd,yd;
   // float foc=4.0/7.3,
@@ -74,11 +74,12 @@ void ConvertFromFishEye(
     }
   }
 
-  SaveImage(convertedImage);
+  SaveImage(convertedImage, DirectionToSaveImage);
 }
 
 QImage LoadImage(QString LoadedImageDirection) {
   QImage naszobraz;
+  QString DirectoryToSave;
   naszobraz.load(LoadedImageDirection);
   qDebug() <<"QImage" << naszobraz.size();
   naszobraz.alphaChannel();

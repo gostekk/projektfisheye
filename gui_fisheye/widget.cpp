@@ -86,9 +86,13 @@ void Widget::OpenClicked() {
 }
 
 void Widget::SaveClicked() {
+	QString DirectionToSaveImage = QFileDialog::getSaveFileName(this,
+		"Save image directory","",
+		"Save directory");
+
 	double vStrenght = ui->correction_box->value();
 	double vRadius = ui->radius_box->value();
-
-	ConvertFromFishEye(ImageToConvert, ConversionType, vStrenght, vRadius);
+	
+	ConvertFromFishEye(ImageToConvert, ConversionType, vStrenght, vRadius, DirectionToSaveImage);
 }
 
