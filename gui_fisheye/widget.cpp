@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QWidget>
 #include <QPalette>
+	#include <QFileDialog>
 
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
@@ -60,6 +61,7 @@ void Widget::ConnectButtons() {
 }
 
 void Widget::StereographicClicked() {
+	qDebug() << "Stereo";
 	ConversionType = "Stereographic";	
 }
 
@@ -76,13 +78,17 @@ void Widget::OrthographicClicked() {
 }
 
 void Widget::OpenClicked() {
-	ImageToConvert = LoadImage();
+    QString LoadedImageDirection = QFileDialog::getOpenFileName(this,
+        "Open image directory", "",
+        "Image directory (*.jpg);;All Files (*)");
+
+	ImageToConvert = LoadImage(LoadedImageDirection);
 }
 
 void Widget::SaveClicked() {
 	double vStrenght = ui->correction_box->value();
 	double vRadius = ui->radius_box->value();
-	qDebug() << vStrenght;
+
 	ConvertFromFishEye(ImageToConvert, ConversionType, vStrenght, vRadius);
 }
 

@@ -5,6 +5,8 @@
 #include <QtMath>
 #include <QColor>
 
+//#include "gui_fisheye/widget.cpp"
+
 void SaveImage(QImage naszobraz) {
   qDebug() <<"Saved: " << naszobraz.save("convertedImage.jpg");
 }
@@ -75,9 +77,9 @@ void ConvertFromFishEye(
   SaveImage(convertedImage);
 }
 
-QImage LoadImage() {
+QImage LoadImage(QString LoadedImageDirection) {
   QImage naszobraz;
-  naszobraz.load("../images/image.jpg");
+  naszobraz.load(LoadedImageDirection);
   qDebug() <<"QImage" << naszobraz.size();
   naszobraz.alphaChannel();
   return naszobraz;

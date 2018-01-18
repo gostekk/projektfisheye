@@ -18,6 +18,7 @@ public:
     ~Widget();
     
     QString ConversionType;
+    QString DirectionToSaveImage;
   
 private slots:
 	void StereographicClicked();
