@@ -84,5 +84,4 @@ QImage LoadImage(QString LoadedImageDirection) {
   qDebug() <<"QImage" << naszobraz.size();
   naszobraz.alphaChannel();
   return naszobraz;
-
 }
